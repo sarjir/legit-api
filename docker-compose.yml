@@ -1,0 +1,20 @@
+version: "2"
+services:
+  api:
+    container_name: api
+    restart: always
+    build: .
+    command: yarn dev
+    volumes:
+      - ./:/api
+    ports:
+      - "3000:3000"
+    links:
+      - database
+  database:
+    container_name: database
+    image: mongo
+    volumes:
+      - ./:/data
+    ports:
+      - "27017:27017"
