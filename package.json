@@ -6,6 +6,9 @@
   "directories": {
     "doc": "docs"
   },
+  "engines": {
+    "node": "12"
+  },
   "dependencies": {
     "accepts": "^1.3.7",
     "body-parser": "^1.19.0",
