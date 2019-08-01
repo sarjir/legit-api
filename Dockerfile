@@ -5,4 +5,4 @@ RUN npm install
 COPY . /app
 RUN npm install -g nodemon
 CMD [“node”, app.js”]
-EXPOSE 3000
+EXPOSE 4000
