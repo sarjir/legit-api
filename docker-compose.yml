@@ -4,9 +4,9 @@ services:
     container_name: api
     restart: always
     build: .
-    command: yarn dev
+    command: nodemon app.js
     volumes:
-      - ./:/api
+      - ./:/app
     ports:
       - "4000:4000"
     links:
