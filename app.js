@@ -11,16 +11,19 @@ let db;
 
 // Construct a schema, using GraphQL schema language
 var schema = buildSchema(`
+  type Article {
+    title: String,
+    author: String,
+  }
+
   type Query {
-    hello: String
+    getArticles: [Article]
   }
 `);
 
 // The root provides a resolver function for each API endpoint
 var root = {
-  hello: () => {
-    let articles;
-
+  getArticles: () => {
     return db
       .collection("articles")
       .find()
@@ -28,7 +31,7 @@ var root = {
       .then((result, error) => {
         console.log("result", result);
 
-        return JSON.stringify(result);
+        return result;
       });
   }
 };
