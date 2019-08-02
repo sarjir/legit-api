@@ -1,6 +1,7 @@
 var express = require("express");
 var graphqlHTTP = require("express-graphql");
 const MongoClient = require("mongodb").MongoClient;
+const ObjectID = require("mongodb").ObjectID;
 var { buildSchema } = require("graphql");
 const assert = require("assert");
 
@@ -17,20 +18,17 @@ var schema = buildSchema(`
   }
 
   type Query {
-    getArticles: [Article]
+    getArticle(id: String!): Article
   }
 `);
 
 // The root provides a resolver function for each API endpoint
 var root = {
-  getArticles: () => {
+  getArticle: ({ id }) => {
     return db
       .collection("articles")
-      .find()
-      .toArray()
+      .findOne({ _id: new ObjectID(id) })
       .then((result, error) => {
-        console.log("result", result);
-
         return result;
       });
   }
