@@ -2,11 +2,13 @@
   {
     "_id": ObjectId("580100f4da893943d393e909"),
     "author": "Joe Smith",
-    "title": "Javascript is the best"
+    "title": "Javascript is the best",
+    "publish_date": ISODate("2019-05-27T22:35:21.908Z")
   },
   {
     "_id": ObjectId("0c7bbde5408b8e89d7ef5c4f"),
     "author": "Sara Jirholm",
-    "title": "Become an export in two days!!"
+    "title": "Become an export in two days!!",
+    "publish_date": ISODate("2019-07-15T22:35:21.908Z")
   }
 ]
