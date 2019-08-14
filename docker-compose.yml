@@ -18,3 +18,10 @@ services:
       - ./:/data
     ports:
       - "27017:27017"
+  database-seed:
+    container_name: database-seed
+    build: ./mongo-seed
+    depends_on:
+      - database
+    links:
+      - database
