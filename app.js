@@ -2,48 +2,78 @@ var express = require("express");
 var graphqlHTTP = require("express-graphql");
 const MongoClient = require("mongodb").MongoClient;
 const ObjectID = require("mongodb").ObjectID;
-var { buildSchema } = require("graphql");
+var { buildSchema, GraphQLObjectType } = require("graphql");
+const { GraphQLDate } = require("graphql-iso-date");
+const { ApolloServer, gql } = require("apollo-server");
 const assert = require("assert");
+const { makeExecutableSchema } = require("graphql-tools");
 
 const dbUrl = "mongodb://database:27017";
 const dbName = "legit";
 const client = new MongoClient(dbUrl);
 let db;
 
-// Construct a schema, using GraphQL schema language
-var schema = buildSchema(`
+const typeDefs = gql`
+  scalar Date
+
   type Article {
-    title: String,
-    author: String,
+    title: String
+    author: String
+    publish_date: Date
+  }
+
+  input ArticleInput {
+    title: String!
+    author: String!
   }
 
   type Query {
     getArticle(id: String!): Article
   }
-`);
 
-var root = {
-  getArticle: ({ id }) => {
-    return db
-      .collection("articles")
-      .findOne({ _id: new ObjectID(id) })
-      .then((result, error) => {
-        return result;
-      });
+  type Mutation {
+    addArticle(input: ArticleInput): Article
+  }
+`;
+
+const resolvers = {
+  Date: GraphQLDate,
+
+  Query: {
+    getArticle: (parent, { id }) => {
+      return db
+        .collection("articles")
+        .findOne({ _id: new ObjectID(id) })
+        .then((result, error) => {
+          console.log("result", result);
+          return result;
+        });
+    }
+  },
+
+  Mutation: {
+    addArticle: async (parent, { input }) => {
+      const article = {
+        input,
+        publish_date: new Date(Date.now())
+      };
+      const newArticle = await db.collection("articles").insertOne(article);
+
+      return db.collection("articles").findOne({ _id: newArticle.insertedId });
+    }
   }
 };
 
-var app = express();
-app.use(
-  "/graphql",
-  graphqlHTTP({
-    schema: schema,
-    rootValue: root,
-    graphiql: true
-  })
-);
-app.listen(4000);
-console.log("Running a GraphQL API server at localhost:4000/graphql");
+const schema = makeExecutableSchema({
+  typeDefs,
+  resolvers
+});
+
+const server = new ApolloServer({ schema });
+
+server.listen().then(({ url }) => {
+  console.log(`🚀  Server ready at ${url}`);
+});
 
 client.connect(function(err) {
   console.log("connecting to database!");
