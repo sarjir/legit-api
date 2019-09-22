@@ -1,8 +1,5 @@
-var express = require("express");
-var graphqlHTTP = require("express-graphql");
 const MongoClient = require("mongodb").MongoClient;
 const ObjectID = require("mongodb").ObjectID;
-var { buildSchema, GraphQLObjectType } = require("graphql");
 const { GraphQLDate } = require("graphql-iso-date");
 const { ApolloServer, gql } = require("apollo-server");
 const assert = require("assert");
