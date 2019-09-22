@@ -17,6 +17,7 @@ const typeDefs = gql`
     title: String
     author: String
     publish_date: Date
+    content: String
   }
 
   input ArticleInput {
@@ -42,7 +43,6 @@ const resolvers = {
         .collection("articles")
         .findOne({ _id: new ObjectID(id) })
         .then((result, error) => {
-          console.log("result", result);
           return result;
         });
     }
