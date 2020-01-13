@@ -14,6 +14,7 @@ const typeDefs = gql`
   scalar Date
 
   type Article {
+    _id: String!
     title: String
     author: String
     publish_date: Date
