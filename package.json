@@ -26,7 +26,7 @@
     "encodeurl": "^1.0.2",
     "escape-html": "^1.0.3",
     "etag": "^1.8.1",
-    "express": "^4.17.1",
+    "express": "^4.17.3",
     "express-graphql": "^0.9.0",
     "finalhandler": "^1.1.2",
     "forwarded": "^0.1.2",
